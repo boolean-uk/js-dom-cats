@@ -1,9 +1,16 @@
 const cards = document.querySelector('.cards')
 const catTemperament = temperaments
+const filterButton = document.querySelector('#filter-button')
+const filterInput = document.querySelector('#breed-input')
 
-async function createCatCards() {
+async function getData() {
+    const allCats = await getAllCats()
+
+    createCatCards(allCats)
+}
+
+function createCatCards(data) {
     cards.innerHTML = ''
-    const data = await getAllCats()
     data.forEach((cat) => {
         const catLi = createCard(cat)
 
@@ -96,4 +103,9 @@ function createForm(cat) {
     return cardText
 }
 
-createCatCards()
+filterButton.addEventListener('click', async () => {
+    const filterCats = await getCatsByBreed(filterInput.value)
+    createCatCards(filterCats)
+})
+
+getData()
