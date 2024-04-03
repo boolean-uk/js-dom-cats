@@ -62,7 +62,6 @@ function updateCat(catId, data) {
             if (i < 0) {
                 return rej(`Cat with ID ${catId} not found`)
             }
-
             cats[i] = { ...cats[i], ...data, id: catId }
             res(cats[i])
         }, 1000)
