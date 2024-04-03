@@ -62,6 +62,10 @@ const buildCatCard = cat => {
     const buttonLi = document.createElement('button')
     buttonLi.setAttribute('type', 'submit')
     buttonLi.innerText = "Update"
+    buttonLi.addEventListener('click', () => {
+        event.preventDefault()
+        updateCatDetails(cat.id, {age: Number(ageInput.value), breed: breedInput.value, colour: colourInput.value, temperament: temperamentSelect.value})
+    })
     formUl.append(buttonLi)
 
     form.append(formUl)
@@ -106,8 +110,19 @@ filterButton.addEventListener('click', async () => {
     render(filteredCats)
 })
 
-// Remove cat with delete button
-async function deleteCat (catID) {
-    const listWithRemovedCat = await removeCat(catID)
-    render(listWithRemovedCat)
+//Remove cat with delete button
+const deleteCat = async (catID) => {
+    await removeCat(catID)
+    const catsWithoutCat = await getAllCats()
+    render(catsWithoutCat)
 }
+
+//Update cat details
+const updateCatDetails = async (catID, data) => {
+    await updateCat(catID, data)
+    const updatedCats = await getAllCats()
+    console.log(updatedCats)
+    render(updatedCats)
+}
+
+

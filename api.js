@@ -49,7 +49,7 @@ function removeCat(catId) {
     return new Promise(res => {
         setTimeout(() => {
             cats = cats.filter(cat => cat.id !== catId)
-            res(cats)
+            res()
         }, 1000)
     })
 }
@@ -62,8 +62,9 @@ function updateCat(catId, data) {
             if (i < 0) {
                 return rej(`Cat with ID ${catId} not found`)
             }
-
+            console.log(cats[i]), 
             cats[i] = { ...cats[i], ...data, id: catId }
+            console.log(cats[i])
             res(cats[i])
         }, 1000)
     })
