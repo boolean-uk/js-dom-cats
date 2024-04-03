@@ -11,14 +11,14 @@ async function getData() {
 
 function createCatCards(data) {
     cards.innerHTML = ''
-    data.forEach((cat) => {
-        const catLi = createCard(cat)
+    data.forEach((cat, index) => {
+        const catLi = createCard(cat, index)
 
         cards.append(catLi)
     });
 }
 
-function createCard(cat) {
+function createCard(cat, index) {
     const li = document.createElement('li')
     const deleteButton = document.createElement('button')
     const cardTitle = document.createElement('h2')
@@ -39,6 +39,12 @@ function createCard(cat) {
     li.append(catImage)
     li.append(form)
     form.append(catForm)
+
+    deleteButton.addEventListener('click', () => {
+        cats.splice(cats.findIndex(catItem => catItem.name === cat.name), 1)
+        console.log(cats)
+        getData()
+    })
 
     return li
 }
