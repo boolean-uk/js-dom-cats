@@ -49,7 +49,7 @@ function removeCat(catId) {
     return new Promise(res => {
         setTimeout(() => {
             cats = cats.filter(cat => cat.id !== catId)
-            res()
+            res(cats)
         }, 1000)
     })
 }

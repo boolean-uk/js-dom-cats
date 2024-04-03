@@ -1,44 +1,3 @@
-// console.log(cats)
-// console.log(temperaments)
-
-// <li class="card">
-//     <button>Delete</button>
-//     <h2 class="card--title">Fluffy</h2>
-//     <img
-//         width="256"
-//         class="card--img"
-//         src="https://neaterpets.com/cdn/shop/articles/mainecoon.jpg"
-//     />
-//     <form>
-//         <ul class="card--text">
-//             <li>Age: <input name="age" type="number" value="5" /></li>
-//             <li>Breed: <input name="breed" type="text" value="Tabby" /></li>
-//             <li>Colour: <input name="colour" type="text" value="Brown" /></li>
-//             <li>
-//                 Temperament: 
-//                 <select name="temperament">
-//                     <option value="Affectionate" selected="true">Affectionate</option>
-//                     <option value="Bold">Bold</option>
-//                     <option value="Calm">Calm</option>
-//                     <option value="Curious">Curious</option>
-//                     <option value="Energetic">Energetic</option>
-//                     <option value="Friendly">Friendly</option>
-//                     <option value="Independent">Independent</option>
-//                     <option value="Loyal">Loyal</option>
-//                     <option value="Playful">Playful</option>
-//                     <option value="Reserved">Reserved</option>
-//                     <option value="Shy">Shy</option>
-//                     <option value="Sociable">Sociable</option>
-//                 </select>
-//             </li>
-//             <li>
-//                 <button type="submit">Update</button>
-//             </li>
-//         </ul>
-//     </form>
-// </li>
-
-//Build Form
 const buildCatCard = cat => {
     const cardsUL = document.querySelector('.cards')
 
@@ -47,6 +6,10 @@ const buildCatCard = cat => {
 
     const deleteButton = document.createElement('button')
     deleteButton.innerText = 'Delete'
+    deleteButton.classList.add('delete-button')
+    deleteButton.addEventListener('click', () => {
+        deleteCat(cat.id)
+    })
     cardLi.append(deleteButton)
 
     const cardH2 = document.createElement('h2')
@@ -126,17 +89,25 @@ const newOption = (cat, value) => {
     return option
 }
 
+//Render cards
+const render = catList => {
+    const cardsUL = document.querySelector('.cards')
+    cardsUL.innerHTML = ''
+    catList.forEach(buildCatCard)
+}
+
+render(cats)
+
 //Filter by breed
 const filterButton = document.querySelector('#filter-button')
 filterButton.addEventListener('click', async () => {
-    const cardsUL = document.querySelector('.cards')
-    cardsUL.innerHTML = ''
     const breedInput = document.querySelector('#breed-input').value
     const filteredCats = await getCatsByBreed(breedInput)
-    filteredCats.forEach(buildCatCard)
+    render(filteredCats)
 })
 
-
-
-
-cats.forEach(buildCatCard)
+// Remove cat with delete button
+async function deleteCat (catID) {
+    const listWithRemovedCat = await removeCat(catID)
+    render(listWithRemovedCat)
+}
