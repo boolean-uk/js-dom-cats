@@ -8,7 +8,7 @@ li {
 html,
 body {
   margin: 0;
-  background-image: url('./img/ilovecats.jpg');
+  background-color: paleturquoise;
   background-size: cover;
 }
 
