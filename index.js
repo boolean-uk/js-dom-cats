@@ -167,7 +167,7 @@ function createCard(allCats) {
 
     const submitBtn = document.createElement('button')
     submitBtn.type = 'submit'
-    submitBtn.innerText = 'Sociable'
+    submitBtn.innerText = 'Update'
     cardText.append(submitBtn)
 
     form.append(cardText)
