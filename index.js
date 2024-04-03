@@ -1,16 +1,18 @@
 const container = document.querySelector('.container')
-const breedFilterBtn = document.getElementById('#filter-button')
+const breedFilterBtn = document.getElementById('filter-button')
 const cardsList = document.querySelector('.cards')
 
-const breedInput = document.getElementById('#breed-input')
+const breedInput = document.getElementById('breed-input')
 
 const breedSearchArea = document.querySelectorAll('div')
 const breedSearchDiv = breedSearchArea[1]
 
 
 breedFilterBtn.addEventListener('click', () => {
-    getCatsByBreed(breedInput.value)
-        .then(createCard) 
+    const catBreedInput = `${breedInput.value}`
+    getCatsByBreed(catBreedInput)
+        .then((filteredCatsList) =>
+            {console.log(filteredCatsList)})
         .catch((errorMessage) => {
             const breedSearchDiv = breedSearchArea[1]
             breedSearchDiv.innerHTML = 
@@ -20,16 +22,20 @@ breedFilterBtn.addEventListener('click', () => {
         })
 })
 
+
+
+
 getAllCats()
     .then((allCats) => {
         createCard(allCats)
     })
+    
 
 function createCard(allCats) {
-
+    
     for(let i = 0; i < allCats.length; i++) {
         const catInfo = allCats[i]
-    
+
     const listItem = document.createElement('li')
     listItem.classList.add('card')
 
@@ -39,6 +45,7 @@ function createCard(allCats) {
 
     deleteBtn.addEventListener('click', () => {
         removeCat()
+            .then(createCard)
     })
 
     const catName = document.createElement('h2')
@@ -166,8 +173,8 @@ function createCard(allCats) {
     listItem.append(form)
 
     cardsList.append(listItem)
-    
     }
+
 }
 
 
