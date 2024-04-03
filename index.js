@@ -116,7 +116,7 @@ function createForm(cat) {
             changeCat.breed = breedInput.value
             changeCat.colour = colourInput.value
             changeCat.temperament = temperamentSelect.value
-            
+
         } catch(errorMessage) {
             alert(errorMessage)
         }
@@ -132,13 +132,3 @@ filterButton.addEventListener('click', async () => {
 })
 
 getData()
-
-// form.addEventListener('submit', async (event) => {
-//     event.preventDefault()
-
-//     cat.age = ageInput.value
-//     cat.breed = breedInput.value
-//     cat.colour = colourInput.value
-//     cat.temperament = temperamentSelect.value
-//     console.log(cat)
-// })
