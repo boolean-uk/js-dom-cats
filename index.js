@@ -11,19 +11,18 @@ async function getData() {
 
 function createCatCards(data) {
     cards.innerHTML = ''
-    data.forEach((cat, index) => {
-        const catLi = createCard(cat, index)
+    data.forEach((cat) => {
+        const catLi = createCard(cat)
 
         cards.append(catLi)
     });
 }
 
-function createCard(cat, index) {
+function createCard(cat) {
     const li = document.createElement('li')
     const deleteButton = document.createElement('button')
     const cardTitle = document.createElement('h2')
     const catImage = document.createElement('img')
-    const form = document.createElement('form')
     const catForm = createForm(cat)
 
     li.classList.add('card')
@@ -37,19 +36,20 @@ function createCard(cat, index) {
     li.append(deleteButton)
     li.append(cardTitle)
     li.append(catImage)
-    li.append(form)
-    form.append(catForm)
+    li.append(catForm)
 
-    deleteButton.addEventListener('click', () => {
-        cats.splice(cats.findIndex(catItem => catItem.name === cat.name), 1)
-        console.log(cats)
-        getData()
+    deleteButton.addEventListener('click', async () => {
+        const deleteCat = await removeCat(cat.id)
+
+        getData(deleteCat)
     })
 
     return li
 }
 
 function createForm(cat) {
+    console.log(cat)
+    const form = document.createElement('form')
     const cardText = document.createElement('ul')
     const ageLi = document.createElement('li')
     const breedLi = document.createElement('li')
@@ -106,7 +106,19 @@ function createForm(cat) {
     cardText.append(buttonLi)
     buttonLi.append(submitButton)
 
-    return cardText
+    form.append(cardText)
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault()
+
+        cat.age = ageInput.value
+        cat.breed = breedInput.value
+        cat.colour = colourInput.value
+        cat.temperament = temperamentSelect.value
+        console.log(cat)
+    })
+
+    return form
 }
 
 filterButton.addEventListener('click', async () => {
