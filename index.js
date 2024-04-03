@@ -46,7 +46,7 @@ function createCard(allCats) {
     deleteBtn.addEventListener('click', () => {
         removeCat()
             .then((removeCatFromList) =>
-                {console.log(removeCatFromList, listItem.remove())})
+                {removeCatFromList, listItem.remove()})
     })
 
     const catName = document.createElement('h2')
