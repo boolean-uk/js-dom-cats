@@ -10,43 +10,51 @@ loading.src = "./img/loading.gif"
 function render() {
     cards.innerHTML = ""
     cards.append(loading)
-    
-    getAllCats()
-    .then((catsArr) => {
+
+    getAllCats().then((catsArr) => {
         cards.innerHTML = ""
         catsArr.forEach((e, i) => {
-        const newCard = cardCreate(e, i)
-        cards.append(newCard)
-    })})
+            const newCard = cardCreate(e, i)
+            cards.append(newCard)
+        })
+    })
 }
 
 filterButton.addEventListener("click", (e) => {
     filterRender(breedSearch.value)
 })
 
-
 function filterRender(breed) {
     cards.innerHTML = ""
     cards.append(loading)
 
-    getCatsByBreed(breed)
-    .then((catsArr) => {
+    getCatsByBreed(breed).then((catsArr) => {
         cards.innerHTML = ""
-        if(catsArr.length > 0) {
-        catsArr.forEach((e, i) => {
-        const newCard = cardCreate(e, i)
-        cards.append(newCard)
-    })} else {
-        render()
-    }
-})}
-
+        if (catsArr.length > 0) {
+            catsArr.forEach((e, i) => {
+                const newCard = cardCreate(e, i)
+                cards.append(newCard)
+            })
+        } else {
+            render()
+        }
+    })
+}
 
 function cardCreate(e) {
     const card = document.createElement("li")
 
     const deleteButton = document.createElement("button")
     deleteButton.innerHTML = "Delete"
+
+    deleteButton.addEventListener("click", (e) => {
+        catName = e.currentTarget.nextElementSibling.innerHTML
+        getAllCats().then((catsArr) => {
+            catElement = catsArr.find((e) => e.name === catName)
+            removeCat(catElement.id).then(render)
+           
+        })
+    })
 
     const heading = document.createElement("h2")
     heading.className = "card--title"
@@ -55,7 +63,7 @@ function cardCreate(e) {
     const image = document.createElement("img")
 
     image.src = e.image
-    
+
     const form = document.createElement("form")
 
     const cardText = document.createElement("ul")
