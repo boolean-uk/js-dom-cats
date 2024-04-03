@@ -48,7 +48,6 @@ function createCard(cat) {
 }
 
 function createForm(cat) {
-    console.log(cat)
     const form = document.createElement('form')
     const cardText = document.createElement('ul')
     const ageLi = document.createElement('li')
@@ -108,14 +107,20 @@ function createForm(cat) {
 
     form.append(cardText)
 
-    form.addEventListener('submit', (event) => {
+    form.addEventListener('submit', async (event) => {
         event.preventDefault()
-
-        cat.age = ageInput.value
-        cat.breed = breedInput.value
-        cat.colour = colourInput.value
-        cat.temperament = temperamentSelect.value
-        console.log(cat)
+         
+        try {
+            const changeCat = await updateCat(cat.id, cat)
+            changeCat.age = Number(ageInput.value)
+            changeCat.breed = breedInput.value
+            changeCat.colour = colourInput.value
+            changeCat.temperament = temperamentSelect.value
+            
+        } catch(errorMessage) {
+            alert(errorMessage)
+        }
+        
     })
 
     return form
@@ -127,3 +132,13 @@ filterButton.addEventListener('click', async () => {
 })
 
 getData()
+
+// form.addEventListener('submit', async (event) => {
+//     event.preventDefault()
+
+//     cat.age = ageInput.value
+//     cat.breed = breedInput.value
+//     cat.colour = colourInput.value
+//     cat.temperament = temperamentSelect.value
+//     console.log(cat)
+// })
