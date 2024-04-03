@@ -123,9 +123,20 @@ const newOption = (cat, value) => {
     if (cat.temperament === value) {
         option.setAttribute('selected', 'true')
     }
-    console.log(option)
     return option
 }
+
+//Filter by breed
+const filterButton = document.querySelector('#filter-button')
+filterButton.addEventListener('click', async () => {
+    const cardsUL = document.querySelector('.cards')
+    cardsUL.innerHTML = ''
+    const breedInput = document.querySelector('#breed-input').value
+    const filteredCats = await getCatsByBreed(breedInput)
+    filteredCats.forEach(buildCatCard)
+})
+
+
 
 
 cats.forEach(buildCatCard)
