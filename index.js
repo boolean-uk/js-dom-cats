@@ -120,6 +120,30 @@ function cardCreate(e) {
     submitButton.type = "submit"
     submitButton.innerHTML = "Update"
 
+    submitButton.addEventListener("click", (e) => {
+        e.preventDefault()
+        const cardSelector = e.currentTarget.parentElement.parentElement.parentElement
+        const catName = cardSelector.querySelector(".card--title").innerHTML
+        const newAge = cardSelector.querySelector(".card--text").children[0].lastElementChild.value
+        const newBreed = cardSelector.querySelector(".card--text").children[1].lastElementChild.value
+        const newColour = cardSelector.querySelector(".card--text").children[2].lastElementChild.value
+        const newTemperment = cardSelector.querySelector(".card--text").children[3].lastElementChild.value
+
+        const data = {name: catName, age: newAge, breed: newBreed, colour: newColour, }
+
+        getAllCats().then(async (catsArr) => {
+            catElement = catsArr.find((e) => e.name === catName)
+
+            try { 
+                await updateCat(catElement.id,data).then(render)
+            } catch(error){
+                alert("Failed to update Cat")
+                throw new Error(error)
+            }
+           
+        })
+    })
+
     cardText.append(ageItem)
     cardText.append(breedItem)
     cardText.append(colourItem)
