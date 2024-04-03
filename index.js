@@ -4,14 +4,43 @@ console.log(temperaments)
 const cards = document.querySelector(".cards")
 const breedSearch = document.querySelector("#breed-input")
 const filterButton = document.querySelector("#filter-button")
+const loading = document.createElement("img")
+loading.src = "./img/loading.gif"
 
 function render() {
+    cards.innerHTML = ""
+    cards.append(loading)
+    
     getAllCats()
-    .then((catsArr) => {catsArr.forEach((e, i) => {
+    .then((catsArr) => {
+        cards.innerHTML = ""
+        catsArr.forEach((e, i) => {
         const newCard = cardCreate(e, i)
         cards.append(newCard)
     })})
 }
+
+filterButton.addEventListener("click", (e) => {
+    filterRender(breedSearch.value)
+})
+
+
+function filterRender(breed) {
+    cards.innerHTML = ""
+    cards.append(loading)
+
+    getCatsByBreed(breed)
+    .then((catsArr) => {
+        cards.innerHTML = ""
+        if(catsArr.length > 0) {
+        catsArr.forEach((e, i) => {
+        const newCard = cardCreate(e, i)
+        cards.append(newCard)
+    })} else {
+        render()
+    }
+})}
+
 
 function cardCreate(e) {
     const card = document.createElement("li")
