@@ -41,7 +41,7 @@ function createCard(cat) {
     deleteButton.addEventListener('click', async () => {
         const deleteCat = await removeCat(cat.id)
 
-        getData(deleteCat)
+        getData()
     })
 
     return li
