@@ -1,6 +1,3 @@
-console.log(cats)
-console.log(temperaments)
-
 const cards = document.querySelector(".cards")
 const breedSearch = document.querySelector("#breed-input")
 const filterButton = document.querySelector("#filter-button")
@@ -105,14 +102,15 @@ function cardCreate(e) {
     temperamentItem.innerHTML = "Temperament: "
 
     const temperamentInput = document.createElement("select")
-    temperaments.forEach((e, index) => {
+    temperaments.forEach((item, index) => {
         const temperamentOption = document.createElement("option")
-        temperamentOption.value = e
-        if (index === 0) {
+        console.log(item)
+        temperamentOption.value = item
+        if (item === e.temperament) {
             temperamentOption.selected = true
         }
 
-        temperamentOption.innerHTML = e
+        temperamentOption.innerHTML = item
         temperamentInput.append(temperamentOption)
     })
 
