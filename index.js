@@ -63,6 +63,8 @@ function cardCreate(e) {
     const image = document.createElement("img")
 
     image.src = e.image
+    image.width = "256"
+    image.className = "card--img"
 
     const form = document.createElement("form")
 
