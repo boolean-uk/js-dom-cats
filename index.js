@@ -12,7 +12,7 @@ breedFilterBtn.addEventListener('click', () => {
     const catBreedInput = `${breedInput.value}`
     getCatsByBreed(catBreedInput)
         .then((filteredCatsList) =>
-            {console.log(filteredCatsList)})
+            console.log(filteredCatsList))
         .catch((errorMessage) => {
             const breedSearchDiv = breedSearchArea[1]
             breedSearchDiv.innerHTML = 
