@@ -1,10 +1,10 @@
 const cardsClass = document.querySelector('.cards')
 const filterBtn = document.querySelector('#filter-button')
-
+const textBreed = document.querySelector('#breed-input')
 const tmp = temperaments
 
 function createCard(cats) {
-  console.log(cats)
+  cardsClass.innerHTML = ''
   for(index in cats){
     const liCardList = document.createElement('li')
     liCardList.classList.add('card')
@@ -40,7 +40,7 @@ function createCard(cats) {
     const inputBreed = document.createElement('input')
     inputBreed.name = 'breed'
     inputBreed.type = 'text'
-    inputBreed.value = cats[index].name
+    inputBreed.value = cats[index].breed
     liBreed.append(inputBreed)
   
     const liColor = document.createElement('li')
@@ -83,15 +83,28 @@ function createCard(cats) {
   
 }
 
+
+
 function render() { 
 
   getAllCats()
   .then((allCats) => {
     createCard(allCats)
   })
+
+  filterButton()
  }
 
 render()
 
+function filterButton(){
+  filterBtn.addEventListener('click', () => {
+    const filterBreed = textBreed.value
+    getCatsByBreed(filterBreed)
+      .then((breed) => {
+        createCard(breed)
+      })
+  })
+}
 // console.log(cats)
 // console.log(temperaments)
