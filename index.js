@@ -35,7 +35,7 @@ function createCatCards(cat) {
 	const formOptionsUl = document.createElement("ul")
 	formOptionsUl.className = "card--text"
 
-	// Create Lis for Age, Breed, Colour, Temperament
+	// Create Li's for Age, Breed, Colour, Temperament
 	const ageLi = document.createElement("li")
 	ageLi.innerText = "Age: "
 	const ageInput = document.createElement("input")
@@ -64,6 +64,7 @@ function createCatCards(cat) {
 	temperamentLi.innerText = "Temperament: "
 	const temperamentOptions = document.createElement("select")
 	temperamentOptions.setAttribute("name", "temperament")
+
 	temperaments.forEach((optionText) => {
 		const option = document.createElement("option")
 		option.innerText = optionText
@@ -122,8 +123,8 @@ renderCatCards(cats)
 
 //Add filter-button functionality
 const filterBtn = document.querySelector("#filter-button")
-function capitalizeFirstLetter(string) {
-	return string.charAt(0).toUpperCase() + string.slice(1)
+function capitalizeFirstLetter(input) {
+	return input.charAt(0).toUpperCase() + input.slice(1)
 }
 filterBtn.addEventListener("click", async () => {
 	const breedInput = document.querySelector("#breed-input").value
