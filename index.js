@@ -4,6 +4,7 @@ async function render(htmlParent = null) {
             if (htmlParent != null) {
                 htmlParent.innerHTML = ''
             }
+            console.log(cats)
             cats.forEach((cat) => generateCard(cat))
         })
         .catch((error) => {
@@ -51,7 +52,7 @@ function generateCard(cat) {
     const age = document.createElement('li')
     age.innerText = 'Age: '
     const ageInput = document.createElement('input')
-    ageInput.name = age
+    ageInput.name = 'age'
     ageInput.type = 'number'
     ageInput.value = cat.age
     age.appendChild(ageInput)
@@ -61,7 +62,7 @@ function generateCard(cat) {
     const breed = document.createElement('li')
     breed.innerText = 'Breed: '
     const breedInput = document.createElement('input')
-    breedInput.name = breed
+    breedInput.name = 'breed'
     breedInput.type = 'text'
     breedInput.value = cat.breed
     breed.appendChild(breedInput)
@@ -71,7 +72,7 @@ function generateCard(cat) {
     const colour = document.createElement('li')
     colour.innerText = 'Colour: '
     const colourInput = document.createElement('input')
-    colourInput.name = colour
+    colourInput.name = 'colour'
     colourInput.type = 'text'
     colourInput.value = cat.colour
     colour.appendChild(colourInput)
@@ -103,15 +104,13 @@ function generateCard(cat) {
         e.preventDefault()
         const newData = new FormData(form)
         const newCat = {
-            id: cat.id,
-            name: newData.get('name'),
             age: newData.get('age'),
             breed: newData.get('breed'),
             colour: newData.get('colour'),
             temperament: newData.get('temperament'),
-            image: cat.image,
         }
         updateCat(cat.id, newCat)
+        console.log(newData)
         render(cardsUL)
     })
 
