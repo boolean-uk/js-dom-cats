@@ -1,15 +1,54 @@
-async function render(htmlParent = null) {
+async function render() {
     getAllCats()
         .then((cats) => {
-            if (htmlParent != null) {
-                htmlParent.innerHTML = ''
-            }
-            console.log(cats)
-            cats.forEach((cat) => generateCard(cat))
+            breedFilter()
+            loadCatList(cats)
         })
         .catch((error) => {
-            throw new Error('ERROR: Could not re-render page: ' + error.message)
+            throw new Error('ERROR: Could not render page: ' + error.message)
         })
+}
+
+function loadCatList(cats) {
+    const cardsUL = document.querySelector('.cards')
+    cardsUL.innerHTML = ''
+    cats.forEach((cat) => generateCard(cat))
+    return console.log('INFO: Finished loading', cats)
+}
+
+function breedFilter() {
+    const breedInputElement = document.getElementById('breed-input')
+    const breedButton = document.getElementById('filter-button')
+    breedButton.addEventListener('click', () => {
+        const inputValue =
+            breedInputElement.value[0].toUpperCase() +
+            breedInputElement.value.slice(1)
+        if (!inputValue) return console.error('ERROR: No input provided')
+        getCatsByBreed(inputValue)
+            .then((found) => {
+                loadCatList(found)
+            })
+            .catch(() => {
+                throw new Error('ERROR: Failed to sort by ', inputValue)
+            })
+    })
+}
+
+function createTemper(cat) {
+    const temperamentContainer = document.createElement('li')
+    const temperament = document.createElement('select')
+    temperament.name = 'temperament'
+
+    temperaments.forEach((temper) => {
+        const option = document.createElement('option')
+        option.value = temper
+        option.innerText = temper
+        if (temper === cat.temperament) {
+            option.selected = true
+        }
+        temperament.appendChild(option)
+    })
+    return temperamentContainer
 }
 
 function generateCard(cat) {
@@ -24,7 +63,12 @@ function generateCard(cat) {
     deleteButton.innerText = 'Delete'
     deleteButton.addEventListener('click', async () => {
         removeCat(cat.id)
-        render(cardsUL)
+            .then(() => {
+                render()
+            })
+            .catch(() => {
+                throw new Error('ERROR: Failed to delete ', cat.id)
+            })
     })
     card.appendChild(deleteButton)
 
@@ -77,23 +121,7 @@ function generateCard(cat) {
     colourInput.value = cat.colour
     colour.appendChild(colourInput)
     textUL.appendChild(colour)
-
-    // Temperament
-    const temperamentContainer = document.createElement('li')
-    const temperament = document.createElement('select')
-    temperament.name = 'temperament'
-
-    temperaments.forEach((temper) => {
-        const option = document.createElement('option')
-        option.value = temper
-        option.innerText = temper
-        if (temper === cat.temperament) {
-            option.selected = true
-        }
-        temperament.appendChild(option)
-    })
-    temperamentContainer.appendChild(temperament)
-    textUL.appendChild(temperamentContainer)
+    textUL.appendChild(createTemper(cat))
 
     // Submit action
     const submit = document.createElement('li')
@@ -104,14 +132,18 @@ function generateCard(cat) {
         e.preventDefault()
         const newData = new FormData(form)
         const newCat = {
-            age: newData.get('age'),
+            age: Number(newData.get('age')),
             breed: newData.get('breed'),
             colour: newData.get('colour'),
             temperament: newData.get('temperament'),
         }
         updateCat(cat.id, newCat)
-        console.log(newData)
-        render(cardsUL)
+            .then(() => {
+                render()
+            })
+            .catch(() => {
+                throw new Error('ERROR: Could not update ', cat.id, newCat)
+            })
     })
 
     submit.appendChild(submitButton)
