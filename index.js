@@ -8,6 +8,13 @@ function renderCat(cat) {
   deleteButton.textContent = 'Delete'
   newCard.appendChild(deleteButton)
 
+  deleteButton.addEventListener('click', (event) => {
+    event.preventDefault()
+    console.log(cat.id)
+    removeCat(cat.id)
+    renderPage()
+  })
+
   const catName = document.createElement('h2')
   catName.classList.add('card--title')
   catName.textContent = cat.name
@@ -23,24 +30,30 @@ function renderCat(cat) {
   const formList = document.createElement('ul')
 
   const catAge = document.createElement('li')
-  catAge.textContent = `Age: ${cat.age}`
-  catAge.setAttribute('name', 'age')
-  catAge.setAttribute('type', 'number')
-  catAge.setAttribute('value', cat.age)
+  catAge.textContent = 'Age: '
+  const catAgeInput = document.createElement('input')
+  catAgeInput.setAttribute('name', 'age')
+  catAgeInput.setAttribute('type', 'number')
+  catAgeInput.setAttribute('value', cat.age)
+  catAge.appendChild(catAgeInput)
   formList.appendChild(catAge)
 
   const catBreed = document.createElement('li')
-  catBreed.textContent = `Breed: ${cat.breed}`
-  catBreed.setAttribute('name', 'breed')
-  catBreed.setAttribute('type', 'text')
-  catBreed.setAttribute('value', cat.breed)
+  catBreed.textContent = 'Breed: '
+  const catBreedInput = document.createElement('input')
+  catBreedInput.setAttribute('name', 'breed')
+  catBreedInput.setAttribute('type', 'text')
+  catBreedInput.setAttribute('value', cat.breed)
+  catBreed.appendChild(catBreedInput)
   formList.appendChild(catBreed)
 
   const catColour = document.createElement('li')
-  catColour.textContent = `Colour: ${cat.colour}`
-  catColour.setAttribute('name', 'colour')
-  catColour.setAttribute('type', 'text')
-  catColour.setAttribute('value', cat.colour)
+  catColour.textContent = 'Colour: '
+  const catColourInput = document.createElement('input')
+  catColourInput.setAttribute('name', 'colour')
+  catColourInput.setAttribute('type', 'text')
+  catColourInput.setAttribute('value', cat.colour)
+  catColour.appendChild(catColourInput)
   formList.appendChild(catColour)
 
   const catTemp = document.createElement('li')
@@ -61,6 +74,22 @@ function renderCat(cat) {
   catUpdate.appendChild(updateButton)
   formList.appendChild(catUpdate)
 
+  updateButton.addEventListener('click', (event) => {
+    event.preventDefault()
+    let updates = {
+        age: catAgeInput.value,
+        breed: catBreedInput.value,
+        colour: catColourInput.value,
+        // temperament: catTemp
+
+        // TODO: add ID to each select element when rendering. this can match the ID of the cat. temperament element
+        // can then be selected by ID, change the rendering step that selects the default option as well.
+
+    }
+    updateCat(cat.id, updates)
+    renderPage()
+  })
+
   cardForm.appendChild(formList)
   newCard.appendChild(cardForm)
 
@@ -76,14 +105,12 @@ async function renderPage() {
           const selectedTemp = document.querySelectorAll(`option[value="${catsArray[i].temperament}"]`)
           const elementToChange = selectedTemp[selectedTemp.length - 1]
           elementToChange.setAttribute('selected', 'true')
-          console.log(selectedTemp)
     }
 }
 
 async function renderPageFiltered(breed) {
     document.querySelector('.cards').innerHTML = ""
     const catsArray = await getCatsByBreed(breed)
-    console.log(catsArray)
     for (let i = 0; i < catsArray.length; i++) {
         renderCat(catsArray[i])
           const selectedTemp = document.querySelectorAll(`option[value="${catsArray[i].temperament}"]`)
@@ -95,9 +122,11 @@ async function renderPageFiltered(breed) {
 document.querySelector('#filter-button').addEventListener('click', (event) => {
     event.preventDefault()
     let inputBreed = document.querySelector('#breed-input').value
-    // inputBreed = `${inputBreed[0].toUpperCase()}${inputBreed.slice(1)}`
+    if (inputBreed === "") {
+        renderPage()
+    } else {
     renderPageFiltered(inputBreed)
-    console.log('event')
+    }
 })
 
 renderPage()
