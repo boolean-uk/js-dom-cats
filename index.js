@@ -97,9 +97,19 @@ function renderCats() {
 // call fetchCats()
 
 function fetchCats() {
-  getAllCats().then(renderCats())
-      .catch(function (error) {
-        console.log("error was: " + error);
-      });
-  }
+  getAllCats()
+    .then(renderCats())
+    .catch(function (error) {
+      console.log("error was: " + error);
+    });
+}
 fetchCats();
+
+const filter = document.querySelector("#filter-button");
+filter.addEventListener("click", () => {
+    const input = document.querySelector('#breed-input').value.toLowerCase();
+    const cardsContainer = document.querySelector('.cards');
+    cardsContainer.textContent = ''; 
+console.log(input)
+  getCatsByBreed(input);
+});
